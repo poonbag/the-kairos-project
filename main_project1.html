@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>kairos</title>
+</head>
+
+<script>
+    const ArrayOfAllAssignmentObjects = [
+  { assignmentName: "IA Exercise 1: Sketches (Part 1)", className: "IA", taskText: "3–5 low-fidelity sketches visualizing temporal data, annotated", dueDate: new Date(2026, 8, 14, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 3.0: Self-portrait as an Object", className: "DS", taskText: "Self-portrait as an Object", dueDate: new Date(2026, 8, 16, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 3.1: Searching Texts in an Array", className: "DS", taskText: "Searching multiple texts in an array of objects (first 4 functions)", dueDate: new Date(2026, 8, 16, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 1: Prototype (Part 2)", className: "IA", taskText: "Code prototype of one sketched time-visualization concept", dueDate: new Date(2026, 8, 21, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P1M2: Data & Code", className: "MS", taskText: "Project 1 Milestone 2: Data & Code", dueDate: new Date(2026, 8, 22, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Reading: Manovich, Database as Symbolic Form", className: "DS", taskText: "Reading response: Manovich, Database as Symbolic Form", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Discussion 3: Database Aesthetics", className: "DS", taskText: "Discussion 3: Database Aesthetics", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 4.0: Node API to MongoDB", className: "DS", taskText: "Node API to MongoDB", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 01", className: "MS", taskText: "Reading 01 response", dueDate: new Date(2026, 8, 24, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 1: Mapping Time (Part 3)", className: "IA", taskText: "5-minute class presentation of your time visualization", dueDate: new Date(2026, 8, 28, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P1M3: Prototype", className: "MS", taskText: "Project 1 Milestone 3: Prototype", dueDate: new Date(2026, 8, 29, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 5.0: MongoDB Queries & Python", className: "DS", taskText: "MongoDB queries & Python installations", dueDate: new Date(2026, 8, 30, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 4: Building Databases", className: "DS", taskText: "Discussion 4: Building Databases", dueDate: new Date(2026, 8, 30, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P1M4: Final Presentation", className: "MS", taskText: "Project 1 Milestone 4: Final Presentation", dueDate: new Date(2026, 9, 6, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 6.0: Scraping Part One", className: "DS", taskText: "Scraping Part One: methods and tables", dueDate: new Date(2026, 9, 7, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 02", className: "MS", taskText: "Reading 02 response", dueDate: new Date(2026, 9, 8, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P2M1: Concepts & Sketches", className: "MS", taskText: "Project 2 Milestone 1: Concepts & Sketches", dueDate: new Date(2026, 9, 13, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 7.0: Scraping Part Two", className: "DS", taskText: "Scraping Part Two: multipage scraping and structuring output", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Homework 7.1: Regex Intro", className: "DS", taskText: "Regular expressions intro", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 5: Nonlinear/Visual Storytelling", className: "DS", taskText: "Discussion 5: Nonlinear/visual storytelling with data", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P2M2: Mockup", className: "MS", taskText: "Project 2 Milestone 2: Mockup", dueDate: new Date(2026, 9, 20, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 8.0: Structuring Tables via Regex", className: "DS", taskText: "Structuring tables through regex/scraping", dueDate: new Date(2026, 9, 21, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 03", className: "MS", taskText: "Reading 03 response", dueDate: new Date(2026, 9, 22, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 2: Quantities & Categories", className: "IA", taskText: "Quantities, categories, and summarized data", dueDate: new Date(2026, 9, 26, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P2M3: Prototype", className: "MS", taskText: "Project 2 Milestone 3: Prototype", dueDate: new Date(2026, 9, 27, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 9.0: Pandas Intro", className: "DS", taskText: "Pandas intro: cleaning, transformation, aggregation", dueDate: new Date(2026, 9, 28, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 6: Data Gathering", className: "DS", taskText: "Discussion 6: Data gathering", dueDate: new Date(2026, 9, 28, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P2M4: Final Presentation (Midterm w/ SI)", className: "MS", taskText: "Project 2 Milestone 4: Final Presentation; Midterm with Smithsonian", dueDate: new Date(2026, 10, 3, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 10.0: Explore & Evaluate a Dataset", className: "DS", taskText: "Explore and evaluate a dataset in Pandas", dueDate: new Date(2026, 10, 4, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 04", className: "MS", taskText: "Reading 04 response", dueDate: new Date(2026, 10, 5, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 3: Textual & Qualitative Data", className: "IA", taskText: "Textual and qualitative data", dueDate: new Date(2026, 10, 9, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M1: Concepts & Sketches", className: "MS", taskText: "Project 3 Milestone 1: Concepts & Sketches", dueDate: new Date(2026, 10, 10, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Data Structuring & Gathering", className: "DS", taskText: "Final Project: data structuring & gathering", dueDate: new Date(2026, 10, 11, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 11.0: Advanced Regex to Tables", className: "DS", taskText: "Advanced regex: transcripts to tables", dueDate: new Date(2026, 10, 18, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Data Exploration & Aggregation", className: "DS", taskText: "Final Project: data exploration & aggregation", dueDate: new Date(2026, 10, 18, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS Reading 05", className: "MS", taskText: "Reading 05 response", dueDate: new Date(2026, 10, 19, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 4: Geographic Visualization", className: "IA", taskText: "Geographic visualization", dueDate: new Date(2026, 10, 23, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M2: Mockup", className: "MS", taskText: "Project 3 Milestone 2: Mockup", dueDate: new Date(2026, 10, 24, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M3: Prototyping", className: "MS", taskText: "Project 3 Milestone 3: Prototyping", dueDate: new Date(2026, 11, 1, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Architecture & Visualization", className: "DS", taskText: "Final Project: final architecture & visualization", dueDate: new Date(2026, 11, 2, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M4: Final Presentations", className: "MS", taskText: "Project 3 Milestone 4: Final Presentations", dueDate: new Date(2026, 11, 8, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Presentations", className: "DS", taskText: "Final presentations: process, outcomes, prototypes", dueDate: new Date(2026, 11, 9, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS Final Project Assets (w/ SI)", className: "MS", taskText: "Final Project Assets due; Final Presentation with Smithsonian", dueDate: new Date(2026, 11, 10, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Final Project Deliverables + Presentation", className: "IA", taskText: "Final Project deliverables + presentation", dueDate: new Date(2026, 11, 14, 17, 0), assignmentLinkUrl: "" },
+];
+
+            ArrayOfAllAssignmentObjects.forEach(a => {
+    console.log(a.assignmentName, a.dueDate);
+});
+
+
+// Maths to figure out how to do days until the due date in milliseconds
+
+const millisecondInOneWholeDay = 1000 * 60 * 60 * 24
+function CalculateDaysUntilTheDeadline(oneAssignment) {
+    const rightNowMoment = new Date();
+                                            console.log(rightNowMoment);
+    const millisecondsRemaining = oneAssignment.dueDate - rightNowMoment;
+    const daysRemaining = Math.floor(millisecondsRemaining/millisecondInOneWholeDay);
+    return daysRemaining;
+};
+
+ArrayOfAllAssignmentObjects.forEach(oneAssignment => {
+    console.log(CalculateDaysUntilTheDeadline(oneAssignment));
+});
+
+</script>
+
+<body>
+
+</body>
+</html>

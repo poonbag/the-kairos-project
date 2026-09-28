@@ -1,0 +1,348 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>kairos</title>
+    <style>
+      #Viewport {
+        position: absolute;
+        background: #e8e5e6;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #TheLiveClockReadout {
+        position: absolute; z-index: 100; top: 12px; left: 16px;
+        font-family: monospace; font-size: 20px; color: #333;
+        pointer-events: none;
+      }
+
+      #SubjectMatter {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      #MousePlayground {
+        position: absolute;
+        z-index: 69;
+        width: 100vw;
+        height: 100vh;
+        cursor: none;
+        pointer-events: none;
+      }
+      
+
+
+
+    </style>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+
+<script>
+    const ArrayOfAllAssignmentObjects = [
+  { assignmentName: "IA Exercise 1: Sketches (Part 1)", className: "IA", taskText: "3–5 low-fidelity sketches visualizing temporal data, annotated", dueDate: new Date(2026, 8, 14, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 3.0: Self-portrait as an Object", className: "DS", taskText: "Self-portrait as an Object", dueDate: new Date(2026, 8, 16, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 3.1: Searching Texts in an Array", className: "DS", taskText: "Searching multiple texts in an array of objects (first 4 functions)", dueDate: new Date(2026, 8, 16, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 1: Prototype (Part 2)", className: "IA", taskText: "Code prototype of one sketched time-visualization concept", dueDate: new Date(2026, 8, 21, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P1M2: Data & Code", className: "MS", taskText: "Project 1 Milestone 2: Data & Code", dueDate: new Date(2026, 8, 22, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Reading: Manovich, Database as Symbolic Form", className: "DS", taskText: "Reading response: Manovich, Database as Symbolic Form", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Discussion 3: Database Aesthetics", className: "DS", taskText: "Discussion 3: Database Aesthetics", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 4.0: Node API to MongoDB", className: "DS", taskText: "Node API to MongoDB", dueDate: new Date(2026, 8, 23, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 01", className: "MS", taskText: "Reading 01 response", dueDate: new Date(2026, 8, 24, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 1: Mapping Time (Part 3)", className: "IA", taskText: "5-minute class presentation of your time visualization", dueDate: new Date(2026, 8, 28, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P1M3: Prototype", className: "MS", taskText: "Project 1 Milestone 3: Prototype", dueDate: new Date(2026, 8, 29, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 5.0: MongoDB Queries & Python", className: "DS", taskText: "MongoDB queries & Python installations", dueDate: new Date(2026, 8, 30, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 4: Building Databases", className: "DS", taskText: "Discussion 4: Building Databases", dueDate: new Date(2026, 8, 30, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P1M4: Final Presentation", className: "MS", taskText: "Project 1 Milestone 4: Final Presentation", dueDate: new Date(2026, 9, 6, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 6.0: Scraping Part One", className: "DS", taskText: "Scraping Part One: methods and tables", dueDate: new Date(2026, 9, 7, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 02", className: "MS", taskText: "Reading 02 response", dueDate: new Date(2026, 9, 8, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P2M1: Concepts & Sketches", className: "MS", taskText: "Project 2 Milestone 1: Concepts & Sketches", dueDate: new Date(2026, 9, 13, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 7.0: Scraping Part Two", className: "DS", taskText: "Scraping Part Two: multipage scraping and structuring output", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Homework 7.1: Regex Intro", className: "DS", taskText: "Regular expressions intro", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 5: Nonlinear/Visual Storytelling", className: "DS", taskText: "Discussion 5: Nonlinear/visual storytelling with data", dueDate: new Date(2026, 9, 14, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P2M2: Mockup", className: "MS", taskText: "Project 2 Milestone 2: Mockup", dueDate: new Date(2026, 9, 20, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 8.0: Structuring Tables via Regex", className: "DS", taskText: "Structuring tables through regex/scraping", dueDate: new Date(2026, 9, 21, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 03", className: "MS", taskText: "Reading 03 response", dueDate: new Date(2026, 9, 22, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 2: Quantities & Categories", className: "IA", taskText: "Quantities, categories, and summarized data", dueDate: new Date(2026, 9, 26, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P2M3: Prototype", className: "MS", taskText: "Project 2 Milestone 3: Prototype", dueDate: new Date(2026, 9, 27, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 9.0: Pandas Intro", className: "DS", taskText: "Pandas intro: cleaning, transformation, aggregation", dueDate: new Date(2026, 9, 28, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "DS Discussion 6: Data Gathering", className: "DS", taskText: "Discussion 6: Data gathering", dueDate: new Date(2026, 9, 28, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS P2M4: Final Presentation (Midterm w/ SI)", className: "MS", taskText: "Project 2 Milestone 4: Final Presentation; Midterm with Smithsonian", dueDate: new Date(2026, 10, 3, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 10.0: Explore & Evaluate a Dataset", className: "DS", taskText: "Explore and evaluate a dataset in Pandas", dueDate: new Date(2026, 10, 4, 23, 59), assignmentLinkUrl: "" }, // assumed
+  { assignmentName: "MS Reading 04", className: "MS", taskText: "Reading 04 response", dueDate: new Date(2026, 10, 5, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 3: Textual & Qualitative Data", className: "IA", taskText: "Textual and qualitative data", dueDate: new Date(2026, 10, 9, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M1: Concepts & Sketches", className: "MS", taskText: "Project 3 Milestone 1: Concepts & Sketches", dueDate: new Date(2026, 10, 10, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Data Structuring & Gathering", className: "DS", taskText: "Final Project: data structuring & gathering", dueDate: new Date(2026, 10, 11, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Homework 11.0: Advanced Regex to Tables", className: "DS", taskText: "Advanced regex: transcripts to tables", dueDate: new Date(2026, 10, 18, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Data Exploration & Aggregation", className: "DS", taskText: "Final Project: data exploration & aggregation", dueDate: new Date(2026, 10, 18, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS Reading 05", className: "MS", taskText: "Reading 05 response", dueDate: new Date(2026, 10, 19, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Exercise 4: Geographic Visualization", className: "IA", taskText: "Geographic visualization", dueDate: new Date(2026, 10, 23, 17, 0), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M2: Mockup", className: "MS", taskText: "Project 3 Milestone 2: Mockup", dueDate: new Date(2026, 10, 24, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M3: Prototyping", className: "MS", taskText: "Project 3 Milestone 3: Prototyping", dueDate: new Date(2026, 11, 1, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Project: Architecture & Visualization", className: "DS", taskText: "Final Project: final architecture & visualization", dueDate: new Date(2026, 11, 2, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS P3M4: Final Presentations", className: "MS", taskText: "Project 3 Milestone 4: Final Presentations", dueDate: new Date(2026, 11, 8, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "DS Final Presentations", className: "DS", taskText: "Final presentations: process, outcomes, prototypes", dueDate: new Date(2026, 11, 9, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "MS Final Project Assets (w/ SI)", className: "MS", taskText: "Final Project Assets due; Final Presentation with Smithsonian", dueDate: new Date(2026, 11, 10, 23, 59), assignmentLinkUrl: "" },
+  { assignmentName: "IA Final Project Deliverables + Presentation", className: "IA", taskText: "Final Project deliverables + presentation", dueDate: new Date(2026, 11, 14, 17, 0), assignmentLinkUrl: "" },
+];
+
+            ArrayOfAllAssignmentObjects.forEach(a => {
+    console.log(a.assignmentName, a.dueDate);
+});
+
+ArrayOfAllAssignmentObjects.forEach((oneAssignment, idx) => {
+  oneAssignment.pyramidSlot = idx;
+});
+
+
+//---- New set for completed assignments ----
+const SetOfCompletedAssignmentNames = new Set();
+
+// NB Array holds ordered, indexed values with duplicates (slow lookups), while Set holds unique, insertion-ordered values without indexes (lightning-fast lookups).
+// ---- auto-cross anything already overdue, on load ----
+ArrayOfAllAssignmentObjects.forEach(oneAssignment => {
+  if (oneAssignment.dueDate < new Date()) {
+    SetOfCompletedAssignmentNames.add(oneAssignment.assignmentName);
+  }
+});
+
+// Maths to figure out how to do days until the due date in milliseconds
+
+const millisecondInOneWholeDay = 1000 * 60 * 60 * 24
+function CalculateDaysUntilTheDeadline(oneAssignment) {
+    const rightNowMoment = new Date();
+    const millisecondsRemaining = oneAssignment.dueDate - rightNowMoment;
+    const daysRemaining = Math.max(0, millisecondsRemaining/millisecondInOneWholeDay); //get rid of 1/0 = infinity issues
+    return daysRemaining;
+};
+
+ArrayOfAllAssignmentObjects.forEach(oneAssignment => {
+    console.log(CalculateDaysUntilTheDeadline(oneAssignment));
+});
+
+</script>
+</head>
+
+<body>
+
+  <div id="Viewport"><div id="TheLiveClockReadout"></div><svg id="MousePlayground"></svg><svg id="SubjectMatter"></svg></div>
+
+
+    <script>
+
+      //---- SVG selections -------------------------
+      const mousePlayground = d3.select("#MousePlayground");
+      const svgSelection = d3.select("#SubjectMatter");
+
+  // ---- tuning dials ---------------------------------------------------------
+  const focalLength = 6;
+  const upstagenessAddedPerRemainingDay = 1;
+
+
+  // ---- scene measurements (refreshed on load + resize) ----------------------
+  const sceneContainerElement = document.getElementById("Viewport");
+  let sceneWidth, sceneHeight, vanishingPointX, horizonY;
+  let prosceniumY, prosceniumLength, upstageY, cornerLeft, cornerRight;
+
+  // ---- all of the anchor points for elements within the scene --------------
+        function refreshSceneGeometry() {
+          sceneWidth  = sceneContainerElement.clientWidth;
+          sceneHeight = sceneContainerElement.clientHeight;
+          vanishingPointX = sceneWidth / 2;
+          horizonY        = sceneHeight / 2;
+          prosceniumY      = sceneHeight * 0.9;
+          prosceniumLength = sceneWidth * 0.8;
+          upstageY         = sceneHeight * 0.35;
+          cornerLeft  = (sceneWidth - prosceniumLength) / 2;
+          cornerRight = sceneWidth - (sceneWidth - prosceniumLength) / 2;
+        }
+
+        //---- crosshair for the mouse ----------------------------------------
+        function BuildTheMouseCrosshairGroup() {
+          const crosshairGroup = mousePlayground.append("g")
+            .attr("id", "CrosshairThatFollowsMouse")
+            .attr("stroke", "#cc2e22").attr("stroke-width", 2);
+          crosshairGroup.append("line").attr("x1", -12).attr("y1", 0).attr("x2", -4).attr("y2", 0);
+          crosshairGroup.append("line").attr("x1", 12).attr("y1", 0).attr("x2", 4).attr("y2", 0);
+          crosshairGroup.append("line").attr("x1", 0).attr("y1", -12).attr("x2", 0).attr("y2", -4);
+          crosshairGroup.append("line").attr("x1", 0).attr("y1", 12).attr("x2", 0).attr("y2", 4);
+          return crosshairGroup;
+        }
+
+        const crosshair = BuildTheMouseCrosshairGroup();
+
+
+      // ---- pyramid rows: fewest rows that hold every assignment ------------------
+      function getTriangularNumber(n) {
+        if (n < 0) return 0;
+        return (n * (n + 1)) / 2;
+      }
+
+  let rows, slots;
+  for (let i = 1; i <= ArrayOfAllAssignmentObjects.length; i++) {
+    if (getTriangularNumber(i) >= ArrayOfAllAssignmentObjects.length) {
+      rows = i;
+      slots = getTriangularNumber(i);
+      break;
+    }
+  }
+
+  // ---- maths helpers --------------------------------------------------------
+  function ConvertDaysLeftIntoDepth(daysLeft) {
+    return daysLeft * upstagenessAddedPerRemainingDay;
+  }
+  function ConvertUpstagenessIntoScaleRatio(upstagenessTotal) {
+    return focalLength / (focalLength + upstagenessTotal);
+  }
+  function scaleRatioFor(oneAssignment) {              // one source of truth
+    const daysLeft = CalculateDaysUntilTheDeadline(oneAssignment);
+    return ConvertUpstagenessIntoScaleRatio(ConvertDaysLeftIntoDepth(daysLeft));
+  }
+
+  // ---- position helpers -----------------------------------------------------
+  function getRowAndSlot(i) {
+    let row = 0;
+    let slotsInThisRow = rows;                 // row 0 = widest (front)
+    while (i >= slotsInThisRow) {
+      i = i - slotsInThisRow;
+      row = row + 1;
+      slotsInThisRow = slotsInThisRow - 1;     // each row back has one fewer
+    }
+    return { row, slotInRow: i, slotsInThisRow };
+  }
+
+  function verticalFloorPosition(oneAssignment) {
+    return upstageY + (prosceniumY - upstageY) * scaleRatioFor(oneAssignment);
+  }
+
+  function horizontalFloorPosition(oneAssignment) {
+    const place = getRowAndSlot(oneAssignment.pyramidSlot);
+    const thisRowWidth = prosceniumLength * (place.slotsInThisRow / rows);
+    const thisRowLeft  = (sceneWidth - thisRowWidth) / 2;
+
+  let slotFraction = (place.slotInRow + 0.5) / place.slotsInThisRow;
+  if (place.row % 2 === 1) slotFraction = 1 - slotFraction;   // snake: odd rows reverse
+
+    return thisRowLeft + slotFraction * thisRowWidth;
+  }
+
+  // ---- per-runner attribute functions ---------------------------------------
+  function runnerRadius(oneAssignment) {
+    return 100 * scaleRatioFor(oneAssignment);
+  }
+
+  function runnerFloorTransform(oneAssignment) {
+    return `translate(${horizontalFloorPosition(oneAssignment)}, ${verticalFloorPosition(oneAssignment)})`;
+  }
+
+  // ---- per-runner skews -----------------
+      function runnerSkewTransform(oneAssignment) {
+        const thisX = horizontalFloorPosition(oneAssignment);
+        const edgeFactor = (thisX - vanishingPointX) / (sceneWidth / 2);
+        const skinniness = 1 - Math.abs(edgeFactor) * 0.5;
+        const turn       = edgeFactor * 25;
+        return `rotate(${turn}) scale(${skinniness}, 1)`;  
+      }
+
+  // ---- drawing the stage ------
+  function DrawTheStage() {
+    svgSelection.append("line")
+      .attr("x1", 0).attr("y1", horizonY)
+      .attr("x2", sceneWidth).attr("y2", horizonY)
+      .attr("stroke", "#ffffff").attr("stroke-width", 3);
+
+    svgSelection.append("line")
+      .attr("x1", 0).attr("y1", sceneHeight)
+      .attr("x2", vanishingPointX).attr("y2", horizonY)
+      .attr("stroke", "#ffffff").attr("stroke-width", 3);
+
+    svgSelection.append("line")
+      .attr("x1", sceneWidth).attr("y1", sceneHeight)
+      .attr("x2", vanishingPointX).attr("y2", horizonY)
+      .attr("stroke", "#ffffff").attr("stroke-width", 3);
+  }
+
+
+  // ---- drawing the RECTANGLES ------
+  function DrawAllCircles() {
+
+    // ---- filter to uncrossed assignments
+    const stillActiveAssignments = ArrayOfAllAssignmentObjects.filter(oneAssignment =>
+      !SetOfCompletedAssignmentNames.has(oneAssignment.assignmentName)
+    );
+
+    const everyRunnerGroup = svgSelection.append("g")
+      .selectAll("g.OneRunnerGroup")
+      .data(stillActiveAssignments, oneAssignment => oneAssignment.assignmentName)
+      .join("g")
+        .attr("class", "OneRunnerGroup")
+        .attr("transform", runnerFloorTransform)
+        .on("click", clickCompleteAction);
+
+
+// ---- append the image
+      everyRunnerGroup.append("image")
+        .attr("href", "runner.png")
+        .attr("width",  oneAssignment => 120 * scaleRatioFor(oneAssignment))
+        .attr("height", oneAssignment => 320 * scaleRatioFor(oneAssignment))
+        .attr("x", oneAssignment => -(60 * scaleRatioFor(oneAssignment)) / 2)
+        .attr("y", oneAssignment => -(160 * scaleRatioFor(oneAssignment)))
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .attr("pointer-events", "all")
+        .on("click", clickCompleteAction);   // click on the image
+
+    everyRunnerGroup.append("title")
+      .text(oneAssignment => JSON.stringify(oneAssignment.dueDate - new Date(), null, 2));
+  }
+  
+  //---- clock functions ---------------
+function UpdateTheLiveClockReadout() {
+  d3.select("#TheLiveClockReadout").text(new Date().toLocaleTimeString());
+}
+
+function DrawOneFrame() {
+  UpdateTheLiveClockReadout();
+}
+
+  //---- callback to draw everything ---------------
+                    function DrawEverything() {
+                      svgSelection.selectAll("*").remove();
+                      svgSelection.attr("viewBox", `0 0 ${sceneWidth} ${sceneHeight}`);
+                      DrawTheStage();
+                      DrawAllCircles();
+                    }
+
+  // ---- go -------------------------------------------------------------------
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  refreshSceneGeometry();
+  DrawEverything();              // draw scene once at start
+  d3.timer(DrawOneFrame);        // clock only, every frame
+  setInterval(DrawEverything, 1000);   // redraw the whole scene once a second
+});
+
+  window.addEventListener("resize", () => {
+    refreshSceneGeometry();
+    DrawEverything();
+  });
+
+  // ---- listening for mouse movements and moving the crosshairs there
+
+    d3.select("#Viewport").on("mousemove", function (mouseEvent) {
+      const pointerPosition = d3.pointer(mouseEvent);
+      crosshair.attr("transform",
+        `translate(${pointerPosition[0]}, ${pointerPosition[1]})`);
+    });
+
+  // ---- listening for clicks to add to completed set ------
+  function clickCompleteAction(clickEvent, oneAssignment) {
+    SetOfCompletedAssignmentNames.add(oneAssignment.assignmentName);
+    DrawEverything();   // refresh
+  }
+
+    </script>
+</body>
+</html>

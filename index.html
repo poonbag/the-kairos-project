@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kairos Runner — build gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{--paper:#e3e5dd;--paper-sky:#eceee7;--paper-deep:#d3d6cb;--ink:#211b14;--ink-soft:#6b6559;--alarm:#cc2e22;--grid:#211b1422;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;color:var(--ink);}
+  #shell{display:flex;flex-direction:column;height:100vh;}
+  header{padding:14px 20px;border-bottom:2px solid var(--ink);background:var(--paper-sky);
+    background-image:repeating-linear-gradient(0deg,var(--grid) 0 1px,transparent 1px 26px),repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px 26px);}
+  header h1{font-size:20px;font-weight:800;letter-spacing:-.01em;}
+  header p{font-size:12px;color:var(--ink-soft);margin-top:2px;font-family:'Space Mono',monospace;}
+  #nav{display:flex;gap:6px;overflow-x:auto;padding:10px 20px;border-bottom:1px solid var(--ink);background:var(--paper);white-space:nowrap;}
+  .navbtn{font-family:'Space Mono',monospace;font-size:12px;border:1.5px solid var(--ink-soft);background:transparent;color:var(--ink);
+    padding:4px 9px;border-radius:6px;cursor:pointer;transition:background .12s,color .12s;flex:0 0 auto;}
+  .navbtn:hover{border-color:var(--ink);}
+  .navbtn.active{background:var(--ink);color:var(--paper-sky);border-color:var(--ink);}
+  #controls{display:flex;align-items:center;gap:14px;padding:8px 20px;border-bottom:1px solid var(--ink);background:var(--paper-sky);font-family:'Space Mono',monospace;font-size:13px;}
+  #controls .note{color:var(--ink-soft);font-style:italic;}
+  #toggle{font-family:'Space Mono',monospace;font-size:12px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:4px 11px;border-radius:6px;cursor:pointer;}
+  #toggle.on{background:var(--alarm);color:#fff;border-color:var(--alarm);}
+  #body{flex:1 1 auto;display:flex;min-height:0;}
+  #stage{flex:1 1 auto;min-width:0;}
+  #stage iframe{width:100%;height:100%;border:0;background:#fff;}
+  #code{flex:0 0 46%;max-width:46%;overflow:auto;background:#1e1b17;color:#e9e4d8;display:none;}
+  #code.show{display:block;}
+  #code .codehead{position:sticky;top:0;background:#2a251e;color:#cdbfae;font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;border-bottom:1px solid #3a332a;}
+  #code pre{padding:14px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word;}
+  #code .add{color:#b8e6a0;}
+</style>
+</head>
+<body>
+<div id="shell">
+  <header>
+    <h1>Kairos Runner — build gallery</h1>
+    <p>39 iterations · click a version to run it · toggle the diff to see only what changed that step</p>
+  </header>
+  <div id="nav"></div>
+  <div id="controls">
+    <button id="toggle">show what changed &#9656;</button>
+    <span class="note" id="note"></span>
+  </div>
+  <div id="body">
+    <div id="stage"><iframe id="frame" title="iteration"></iframe></div>
+    <div id="code"><div class="codehead" id="codehead"></div><pre id="codepre"></pre></div>
+  </div>
+</div>
+<script>
+let ITER=[], current=0, showCode=false;
+const nav=document.getElementById('nav'), frame=document.getElementById('frame'),
+      code=document.getElementById('code'), codepre=document.getElementById('codepre'),
+      codehead=document.getElementById('codehead'), toggle=document.getElementById('toggle'),
+      note=document.getElementById('note');
+fetch('iterations.json').then(r=>r.json()).then(d=>{
+  ITER=d;
+  d.forEach((it,i)=>{const b=document.createElement('button');b.className='navbtn';b.textContent='v'+it.label;b.onclick=()=>select(i);nav.appendChild(b);});
+  select(0);
+});
+function select(i){
+  current=i;
+  [...nav.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+  frame.src=ITER[i].file;
+  note.textContent=ITER[i].note||'';
+  renderCode();
+}
+function renderCode(){
+  const it=ITER[current];
+  codehead.textContent='v'+it.label+' — lines added this iteration';
+  const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  codepre.innerHTML='<span class="add">'+esc(it.added||'(no lines added — a tweak or deletion step)')+'</span>';
+}
+toggle.onclick=()=>{
+  showCode=!showCode;
+  code.classList.toggle('show',showCode);
+  toggle.classList.toggle('on',showCode);
+  toggle.textContent=showCode?'hide diff \u25be':'show what changed \u25b8';
+};
+</script>
+</body>
+</html>
